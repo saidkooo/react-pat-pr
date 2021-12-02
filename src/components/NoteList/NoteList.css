@@ -1,0 +1,4 @@
+.noteList {
+    list-style: none;
+    display: flex;
+}
