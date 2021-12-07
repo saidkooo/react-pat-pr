@@ -1,12 +1,12 @@
 import Note from '../Note/Note';
 import './NoteList.css';
 
-const NoteList = ({notes}) => {
+const NoteList = ({notes, remove}) => {
     return (
         <ul className="noteList">
             {
-                notes.map(note => 
-                    <Note key={note.id+1} id={note.id+1} title={note.title} descr={note.descr}/>
+                notes.map((note, index) => 
+                    <Note key={note.id} number={index} note={note} remove={remove}/>
                 )
             }
         </ul>

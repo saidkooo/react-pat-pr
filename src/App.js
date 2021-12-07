@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NoteList from "./components/NoteList/NoteList"
 import NoteInput from "./UI/NoteInput/NoteInput";
 import NoteButton from "./UI/NoteButton/NoteButton";
-import { useState } from 'react';
+import NoteFilter from './UI/NoteFilter/NoteFilter';
 
 
 
 
 function App() {
   const [notes, setNotes] = useState([
-    {id: 0, title: 'Title 1', descr: 'Descr 1'},
-    {id: 1, title: 'Title 2', descr: 'Descr 2'},
-    {id: 2, title: 'Title 3', descr: 'Descr 3'},
-    {id: 3, title: 'Title 4', descr: 'Descr 4'},
-    {id: 4, title: 'Title 5', descr: 'Descr 5'}
+    {id: 0, title: 'First Title', descr: 'Descr 1'},
+    {id: 1, title: 'Second Title', descr: 'Descr 2'},
+    {id: 2, title: 'Third Title', descr: 'Descr 3'},
+    {id: 3, title: 'Fourth Title', descr: 'Descr 4'},
+    {id: 4, title: 'Fifth Title', descr: 'Descr 5'}
   ]);
 
-
+  const [selectedSort, setSelectedSort] = useState('');
   let [noteTitle, setNoteTitle] = useState('');
   let [noteDescr, setNoteDescr] = useState('');
 
@@ -32,6 +32,17 @@ function App() {
     setNoteDescr('');
   }
 
+  const removeNote = (noteId) => {
+    setNotes(notes.filter(n => n.id !== noteId))
+  }
+
+  const sortNote = (sort) => {
+    console.log('#### sort:', sort);
+    setSelectedSort(sort);
+    console.log('#### selected sort:', sort);
+    setNotes([...notes].sort((a, b) => a[sort].localeCompare(b[sort])));
+  }
+
   return (
     <div className="App">
       <form onSubmit={addNewNote}>
@@ -39,17 +50,26 @@ function App() {
           type = 'text'
           value={noteTitle}
           onChange={(e) => setNoteTitle(e.target.value)}
-          placeholder = {'Input title of note'}
+          placeholder = {'Название'}
         />
         <NoteInput 
           type = 'text'
           value={noteDescr}
           onChange={(e) => setNoteDescr(e.target.value)}
-          placeholder = {'Input description of note'}
+          placeholder = {'Описание'}
         />
         <NoteButton>Add</NoteButton>
       </form>
-      <NoteList notes = {notes} />
+      <NoteFilter
+        defaultValue=''
+        options={[{value: 'title', title: 'По названию'}, {value: 'descr', title: 'По содержанию'}]}
+        value={selectedSort}
+        sort={sortNote}
+      />
+      {notes.length == 0 
+        ? <h2>Записей пока нет</h2>
+        : <NoteList notes={notes} remove={removeNote}/>
+      }
     </div>
   );
 }
