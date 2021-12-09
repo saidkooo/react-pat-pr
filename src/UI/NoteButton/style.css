@@ -1,0 +1,20 @@
+button {
+    border-radius: 0;
+    border: none;
+    background-image: none;
+    padding: 5px 10px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+button:hover {
+    opacity: .8;
+}
+button.blue {
+    background-color: rgb(0, 132, 255);
+}
+button.green {
+    background-color: rgb(54, 173, 54);
+}
+button.red {
+    background-color: rgb(255, 72, 72);
+}

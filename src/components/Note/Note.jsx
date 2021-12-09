@@ -7,8 +7,8 @@ const Note = ({number, note, remove}) => {
         <li className="Note">
             <h2><i>{number + 1}</i> {note.title}</h2>
             <p>{note.descr}</p>
-            <NoteButton>Редактировать</NoteButton>
-            <NoteButton onClick={() => remove(note.id)}>Удалить</NoteButton>
+            <NoteButton className='green'>Редактировать</NoteButton>
+            <NoteButton className='red' onClick={() => remove(note.id)}>Удалить</NoteButton>
         </li>
     );
 }

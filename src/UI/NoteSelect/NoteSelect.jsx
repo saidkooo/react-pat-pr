@@ -1,11 +1,11 @@
 import React from 'react';
+import './style.css'
 
-const NoteFilter = ({defaultValue, options, value, sort}) => {
-    console.log('#### value:', value)
+const NoteSelect = ({defaultValue, options, value, onChange}) => {
     return (
         <select
             value={value}
-            onChange={event => sort(event.target.value)}
+            onChange={onChange}
         >   
             <option disabled>{defaultValue}</option>
             {options.map(option => 
@@ -15,4 +15,4 @@ const NoteFilter = ({defaultValue, options, value, sort}) => {
     );
 }
 
-export default NoteFilter;
+export default NoteSelect;

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import NoteList from "./components/NoteList/NoteList"
-import NoteInput from "./UI/NoteInput/NoteInput";
-import NoteButton from "./UI/NoteButton/NoteButton";
-import NoteFilter from './UI/NoteFilter/NoteFilter';
+import NoteAddForm from './components/NoteAddForm/NoteAddForm';
+import NotesFilter from './components/NotesFilter/NotesFilter'
+
 
 
 
@@ -16,59 +16,37 @@ function App() {
     {id: 4, title: 'Fifth Title', descr: 'Descr 5'}
   ]);
 
-  const [selectedSort, setSelectedSort] = useState('');
-  let [noteTitle, setNoteTitle] = useState('');
-  let [noteDescr, setNoteDescr] = useState('');
+  const [filter, setFilter] = useState({sortQuery: '', searchQuery: ''});
+  
+  const foundedNotes = useMemo(() => {
+    console.log(filter.sortQuery)
+    if(filter.sortQuery) {
+      return [...notes].sort((a, b) => a[filter.sortQuery].localeCompare(b[filter.sortQuery]));
+    } else {
+      return notes;
+    }
+  }, [filter.sortQuery, notes]);
 
-  const addNewNote = (e) => {
-    e.preventDefault();
-    const newNote = {
-      id: Date.now(),
-      title: noteTitle,
-      descr: noteDescr
-    };
-    setNotes([...notes, newNote]);
-    setNoteTitle('');
-    setNoteDescr('');
+  const sortedAndFoundedNotes = useMemo(() => {
+    console.log(filter.searchQuery)
+    return foundedNotes.filter(note => note.title.toLowerCase().includes(filter.searchQuery.toLowerCase()))
+  }, [foundedNotes, filter.searchQuery])
+
+  const addNewNote = (newNote) => {
+    setNotes([...notes, newNote])
   }
 
   const removeNote = (noteId) => {
     setNotes(notes.filter(n => n.id !== noteId))
   }
 
-  const sortNote = (sort) => {
-    console.log('#### sort:', sort);
-    setSelectedSort(sort);
-    console.log('#### selected sort:', sort);
-    setNotes([...notes].sort((a, b) => a[sort].localeCompare(b[sort])));
-  }
-
   return (
     <div className="App">
-      <form onSubmit={addNewNote}>
-        <NoteInput 
-          type = 'text'
-          value={noteTitle}
-          onChange={(e) => setNoteTitle(e.target.value)}
-          placeholder = {'Название'}
-        />
-        <NoteInput 
-          type = 'text'
-          value={noteDescr}
-          onChange={(e) => setNoteDescr(e.target.value)}
-          placeholder = {'Описание'}
-        />
-        <NoteButton>Add</NoteButton>
-      </form>
-      <NoteFilter
-        defaultValue=''
-        options={[{value: 'title', title: 'По названию'}, {value: 'descr', title: 'По содержанию'}]}
-        value={selectedSort}
-        sort={sortNote}
-      />
-      {notes.length == 0 
-        ? <h2>Записей пока нет</h2>
-        : <NoteList notes={notes} remove={removeNote}/>
+      <NoteAddForm add={addNewNote}/>
+      <NotesFilter filter={filter} setFilter={setFilter}/>
+      {sortedAndFoundedNotes.length 
+        ? <NoteList notes={sortedAndFoundedNotes} remove={removeNote}/>
+        : <h2>Записей пока нет</h2>
       }
     </div>
   );
