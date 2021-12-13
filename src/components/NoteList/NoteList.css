@@ -1,4 +1,21 @@
 .noteList {
     list-style: none;
     display: flex;
+    flex-wrap: wrap;
+}
+.note-enter {
+    opacity: 0;
+}
+.note-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+.note-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+.note-exit-active {
+    opacity: 0;
+    transform: translateY(-100px);
+    transition: all 500ms ease-in;
 }

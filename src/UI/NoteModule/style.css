@@ -1,0 +1,21 @@
+.module {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.module.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.moduleContent {
+    min-width: 250px;
+    padding: 25px;
+    background-color: #FFFFFF;
+}

@@ -1,53 +1,73 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNotes } from './hooks/useNotes';
 import NoteList from "./components/NoteList/NoteList"
 import NoteAddForm from './components/NoteAddForm/NoteAddForm';
-import NotesFilter from './components/NotesFilter/NotesFilter'
+import NotesFilter from './components/NotesFilter/NotesFilter';
+import NoteModule from './UI/NoteModule/NoteModule';
+import NoteButton from './UI/NoteButton/NoteButton';
+
+import storage from './storage.json';
+import Loading from './UI/Loading/Loading';
+
 
 
 
 
 
 function App() {
-  const [notes, setNotes] = useState([
-    {id: 0, title: 'First Title', descr: 'Descr 1'},
-    {id: 1, title: 'Second Title', descr: 'Descr 2'},
-    {id: 2, title: 'Third Title', descr: 'Descr 3'},
-    {id: 3, title: 'Fourth Title', descr: 'Descr 4'},
-    {id: 4, title: 'Fifth Title', descr: 'Descr 5'}
-  ]);
-
+  /* Main state */
+  const [notes, setNotes] = useState([]);
+  /* Loading state */
+  const [notesLoading, setNotesLoading] = useState(false);
+  /* Filters states */
   const [filter, setFilter] = useState({sortQuery: '', searchQuery: ''});
-  
-  const foundedNotes = useMemo(() => {
-    console.log(filter.sortQuery)
-    if(filter.sortQuery) {
-      return [...notes].sort((a, b) => a[filter.sortQuery].localeCompare(b[filter.sortQuery]));
-    } else {
-      return notes;
-    }
-  }, [filter.sortQuery, notes]);
+  /* Module visibility state */
+  const [moduleVis, setModuleVis] = useState(false);
+  /* Call search and sort hook */
+  const sortedAndFoundedNotes = useNotes(notes, filter.sortQuery, filter.searchQuery);
 
-  const sortedAndFoundedNotes = useMemo(() => {
-    console.log(filter.searchQuery)
-    return foundedNotes.filter(note => note.title.toLowerCase().includes(filter.searchQuery.toLowerCase()))
-  }, [foundedNotes, filter.searchQuery])
+  /* Getting notes from JSON */
+  useEffect(() => {
+    setNotesLoading(true);
+    /* Loading notes simulation */
+    setTimeout(() => {
+      setNotes(storage.notes)
+      console.log(notes)
+      setNotesLoading(false)
+    }, 1000)
+    
+  }, []);
 
+  /* Add new note function */
   const addNewNote = (newNote) => {
-    setNotes([...notes, newNote])
+    setNotes([newNote, ...notes]);
+
+    /*Close module*/
+    setModuleVis(false)
   }
 
+  /* Remove note function */
   const removeNote = (noteId) => {
-    setNotes(notes.filter(n => n.id !== noteId))
+    setNotes(notes.filter(n => n.id !== noteId));
   }
 
   return (
     <div className="App">
-      <NoteAddForm add={addNewNote}/>
+      <NoteButton 
+        style={{marginBottom: 30}} 
+        className={'blue'}
+        onClick={() => setModuleVis(true)}
+      >
+        Добавить запись
+      </NoteButton>
+      <NoteModule visible={moduleVis} setVisible={setModuleVis}>
+        <NoteAddForm add={addNewNote}/>
+      </NoteModule>
       <NotesFilter filter={filter} setFilter={setFilter}/>
-      {sortedAndFoundedNotes.length 
-        ? <NoteList notes={sortedAndFoundedNotes} remove={removeNote}/>
-        : <h2>Записей пока нет</h2>
-      }
+        {notesLoading
+          ? <div style={{display: 'flex', justifyContent: 'center'}}><Loading/></div>
+          : <NoteList notes={sortedAndFoundedNotes} remove={removeNote}/>
+        }
     </div>
   );
 }

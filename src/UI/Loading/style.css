@@ -1,0 +1,16 @@
+.loading {
+    width: 100px;
+    height: 100px;
+    border: 1px dashed rgb(104, 197, 104);
+    border-radius: 50%;
+    animation: rotate .5s infinite linear;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg) scale(1);
+    }
+    to {
+        transform: rotate(360deg)scale(1.5);
+    }
+}

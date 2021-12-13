@@ -1,15 +1,29 @@
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import Note from '../Note/Note';
 import './NoteList.css';
 
 const NoteList = ({notes, remove}) => {
     return (
-        <ul className="noteList">
+        <>  
+        {
+        notes.length 
+        ?
+        <TransitionGroup className="noteList">
             {
                 notes.map((note, index) => 
-                    <Note key={note.id} number={index} note={note} remove={remove}/>
+                    <CSSTransition 
+                        key={note.id}
+                        timeout={500}
+                        classNames='note'
+                    >
+                        <Note number={index} note={note} remove={remove}/>
+                    </CSSTransition>
                 )
             }
-        </ul>
+        </TransitionGroup>
+        : <h2>Записей нет</h2>
+        }
+        </>
     );
 }
 
