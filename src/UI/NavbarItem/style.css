@@ -1,0 +1,17 @@
+.nav__item {
+    width: 100%;
+    padding: 10px;
+    border-radius: 30px;
+}
+
+.nav__item:hover,
+.nav__item.active {
+    background: #2b2f3b;
+}
+
+.nav__item {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: #FFFFFF;
+}

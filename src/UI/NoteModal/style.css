@@ -1,4 +1,4 @@
-.module {
+.modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -8,13 +8,13 @@
     display: none;
 }
 
-.module.active {
+.modal.active {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.moduleContent {
+.modalContent {
     min-width: 250px;
     padding: 25px;
     background-color: #FFFFFF;

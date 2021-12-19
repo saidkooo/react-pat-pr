@@ -1,25 +1,29 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import NavbarItem from '../NavbarItem/NavbarItem';
 import './style.css';
 
 const Navbar = () => {
+    const [navItems, setNavItems] = useState([
+        {navItemName: 'Главная', active: false, path: '/'},
+        {navItemName: 'Заметки', active: true, path: '/notes'},
+        {navItemName: 'Списки', active: false, path: '/'},
+        {navItemName: 'Напоминания', active: false, path: '/notes'},
+        {navItemName: 'Блокноты', active: false, path: '/'}
+    ]);
+
+    const changeNavItemActive = (itemName) => {
+        setNavItems(navItems.map(item => 
+            itemName === item.navItemName ? {...item, active: true} : {...item, active: false}
+        ))
+    }
+
     return (
-        <div className='navbar'>
-            <div className="navbar__item">
-                <Link to="/">Главная</Link>
-            </div>
-            <div className={["navbar__item", "active"].join(' ')}>
-                <Link to="/notes">Заметки</Link>
-            </div>
-            <div className="navbar__item">
-                <Link to="/notes">Списки</Link>
-            </div>
-            <div className="navbar__item">
-                <Link to="/notes">Напоминания</Link>
-            </div>
-            <div className="navbar__item">
-                <Link to="/notes">Блокноты</Link>
-            </div>
+        <div className='nav'>
+            {
+                navItems.map(item => 
+                    <NavbarItem key={item.navItemName} item={item} itemActive = {changeNavItemActive}/>
+                )
+            }
         </div>
         
     );

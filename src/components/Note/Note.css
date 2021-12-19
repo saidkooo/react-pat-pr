@@ -8,8 +8,14 @@
     height: 100%;
     padding: 15px;
     border-radius: 10px;
+    overflow: hidden;
     background: #2b2f3b;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.note:hover {
+    opacity: .8;
+    cursor: pointer;
 }
 
 .note__title {

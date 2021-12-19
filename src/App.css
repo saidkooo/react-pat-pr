@@ -21,4 +21,16 @@
     background: #232429;
     border-radius: 15px;
     color: #FFFFFF;
+    overflow-y: scroll;
+    
+}
+.pages::-webkit-scrollbar {
+    width: 5px;               /* width of the entire scrollbar */
+}
+.pages::-webkit-scrollbar-button {
+    opacity: 0;
+}
+.pages::-webkit-scrollbar-thumb {
+    background-color: #696e7e;
+    border-radius: 5px;
 }

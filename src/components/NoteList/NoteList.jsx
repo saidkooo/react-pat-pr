@@ -2,13 +2,14 @@ import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import Note from '../Note/Note';
 import './NoteList.css';
 
-const NoteList = ({notes, remove}) => {
+const NoteList = ({notes, remove, edit}) => {
     return (
         <>  
         {
         notes.length 
         ?
         <TransitionGroup className="noteList">
+            
             {
                 notes.map((note, index) => 
                     <CSSTransition 
@@ -16,7 +17,7 @@ const NoteList = ({notes, remove}) => {
                         timeout={500}
                         classNames='note'
                     >
-                        <Note number={index} note={note} remove={remove}/>
+                        <Note number={index} note={note} remove={remove} edit={edit}/>
                     </CSSTransition>
                 )
             }
